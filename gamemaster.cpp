@@ -131,20 +131,26 @@ void GameMaster::game(int x, int y, Box* pbox){
 
 }
 
-
-
-GameMaster::GameMaster(int gx, int gy):Application(gx, gy){
+void GameMaster::start(){
+    _gameover = false;
+    _x_moves_next = true;
     _textbox = new StaticTextBox(this, 25, 25, 250, 25, "The first player to move: X");
+    _restart = new Box(this,550,25,75,25,'r',"Restart",[this](Box* pbox){start();});
     for(int i=0; i<15; i++){
         for(int j=0; j<15; j++){
-            boxes[i][j] = new Box(this,25+40*j,75+40*i,40,40,'-', [j,i,this](Box* pbox){
+            boxes[i][j] = new Box(this,25+40*j,75+40*i,40,40,'-',"",[j,i,this](Box* pbox){
                 game(j, i, pbox);
             });
         }
     }
-    /* dontetlen tesztelesehez (az osszes box-ot o-ra allitva es az elsot uresre...
+    /*
+    dontetlen tesztelesehez (az osszes box-ot o-ra allitva es az elsot uresre...
     boxes[0][0] = new Box(this,25+40*0,75+40*0,40,40,'-', [this](Box* pbox){
                 game(0, 0, pbox);
             });
     */
+}
+
+GameMaster::GameMaster(int gx, int gy):Application(gx, gy){
+    start();
 }

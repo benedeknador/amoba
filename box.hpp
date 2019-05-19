@@ -10,11 +10,12 @@ using namespace std;
 class Box : public Widget {
 protected:
     function<void(Box*)> _f;
+    string _text;
     bool _focused = false;
     char _id;
     bool _clicked = false;
 public:
-    Box(Application * parent, int x, int y, int sx, int sy, char id, function<void(Box*)> f);
+    Box(Application * parent, int x, int y, int sx, int sy, char id, string text, function<void(Box*)> f);
     virtual void unselect();
     virtual void draw();
     virtual void handle(genv::event ev);

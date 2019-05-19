@@ -7,9 +7,10 @@
 using namespace genv;
 using namespace std;
 
-Box::Box(Application * parent, int x, int y, int sx, int sy, char id, function<void(Box*)> f):Widget(parent,x,y,sx,sy)
+Box::Box(Application * parent, int x, int y, int sx, int sy, char id, string text, function<void(Box*)> f):Widget(parent,x,y,sx,sy)
 {
     _parent->registerWidget(this);
+    _text = text;
     _id = id;
     _f = f;
 }
@@ -34,13 +35,8 @@ void Box::draw()
 {
         ///ures box
 
-        gout << move_to(_x, _y)  << color(200,200,200) << box(_size_x, _size_y);
-        if (_focused) {
-            gout << color(0,75,255);
-        } else {
-            gout << color(100,100,100);
-        }
-        gout << move_to(_x+1, _y+1) << box(_size_x-2, _size_y-2);
+        gout << move_to(_x, _y)     << color(200,200,200) << box(_size_x, _size_y);
+        gout << move_to(_x+1, _y+1) << color(100,100,100) << box(_size_x-2, _size_y-2);
         gout << move_to(_x+2, _y+2) << color(200,200,200) << box(_size_x-4, _size_y-4);
 
         ///X kirajzolasa
@@ -66,10 +62,15 @@ void Box::draw()
                 }
             }
         }
+
+        ///Restart gomb kirajzolasa
+
+        if(_id == 'r'){
+            gout  << move_to(_x+3+(_size_x-4-gout.twidth(_text))/2, _y+2+gout.cascent()) << color(100,100,100) << text(_text);
+        }
 }
 void Box::handle(event ev){
     if(ev.button == btn_left){
         _f(this);
     }
-
 }
