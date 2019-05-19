@@ -10,12 +10,12 @@
 class GameMaster: public Application{
 protected:
     StaticTextBox* _textbox;
-    vector<Widget*> boxes;
+    vector<vector<Box*>> boxes;
     bool _x_moves_next = true;
     bool _gameover = false;
     void game(int i, int j, Box* pbox);
 public:
-    GameMaster();
+    GameMaster(int gx, int gy);
 };
 
 #endif // GAMEMASTER_HPP_INCLUDED

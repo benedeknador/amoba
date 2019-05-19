@@ -1,4 +1,3 @@
-#include "graphics.hpp"
 #include "widgets.hpp"
 #include "box.hpp"
 #include "application.hpp"
@@ -14,9 +13,7 @@ using namespace std;
 
 int main()
 {
-    gout.open(650,700);
-
-    GameMaster app;
+    GameMaster app(650,700);
     app.event_loop();
 
     return 0;

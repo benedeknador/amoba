@@ -6,7 +6,9 @@
 
 using namespace genv;
 
-Application::Application(){
+Application::Application(int gx, int gy){
+    _gx = gx;
+    _gy = gy;
 }
 
 void Application::registerWidget(Widget * pw){
@@ -14,7 +16,7 @@ void Application::registerWidget(Widget * pw){
 }
 
 void Application::event_loop() {
-
+        gout.open(_gx,_gy);
         gout<<move_to(0,0)<<color(140,200,90)<<box(650,700);
 
         for (Widget * w : widgets) {

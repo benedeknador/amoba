@@ -13,10 +13,11 @@ class Widget;
 class Application{
 protected:
     int _focus;
+    int _gx, _gy;
     int _mouse_x,_mouse_y;
     vector<Widget*> widgets;
 public:
-    Application();
+    Application(int gx, int gy);
     virtual ~Application(){};
     void registerWidget(Widget * pw);
     void event_loop();
