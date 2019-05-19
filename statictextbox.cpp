@@ -24,6 +24,6 @@ void StaticTextBox::handle(event ev){
 string StaticTextBox::get_text(){
     return t;
 }
-string StaticTextBox::set_text(string text){
+void StaticTextBox::set_text(string text){
     t = text;
 }

@@ -10,7 +10,7 @@
 class GameMaster: public Application{
 protected:
     StaticTextBox* _textbox;
-    vector<vector<Box*>> boxes;
+    Box* boxes[15][15];
     bool _x_moves_next = true;
     bool _gameover = false;
     void game(int i, int j, Box* pbox);

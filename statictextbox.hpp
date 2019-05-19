@@ -16,7 +16,7 @@ public:
     virtual void draw();
     virtual void handle(genv::event ev);
     virtual string get_text();
-    virtual string set_text(string text);
+    virtual void set_text(string text);
 };
 
 

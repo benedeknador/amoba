@@ -6,71 +6,126 @@
 #include <string>
 
 void GameMaster::game(int x, int y, Box* pbox){
-    if(_gameover==false){
+    if(!_gameover){
         char sign;
-        if(_x_moves_next == true && pbox->get_id()=='-'){        //kattintás elhelyezése
-            pbox->set_id('x');
-            sign = 'x';
-            _textbox->set_text("Next player: O");
-            _x_moves_next = false;
-
-        }else if(pbox->get_id()=='-'){
-            pbox->set_id('o');
-            sign = 'o';
-            _textbox->set_text("Next player: X");
-            _x_moves_next = true;
-        }
-        ///vizszintes vizsgalat
-
-        int s_count = 0;
-        int y_min = max(0, y-4);
-        int y_max = min(14, y+4);
-        for(int i= y_min; i<=y_max; i++){
-            if(boxes[x][i]->get_id() == sign){
-                s_count++;
-                //cout << s_count;
-                if(s_count == 5){
-                    _gameover = true;
-                }
+        if(pbox->get_id()=='-'){ //ha sikeres lepes tortent
+            if(_x_moves_next){
+                pbox->set_id('x');
+                sign = 'x';
+                _textbox->set_text("Next player: O");
+                _x_moves_next = false;
             }else{
-                s_count = 0;
+                pbox->set_id('o');
+                sign = 'o';
+                _textbox->set_text("Next player: X");
+                _x_moves_next = true;
             }
-        }
 
-        ///fuggoleges vizsgalat
+            ///vizszintes vizsgalat
 
-        s_count = 0;
-        int x_min = max(0, x-4);
-        int x_max = min(14, x+4);
-        for(int i= x_min; i<=x_max; i++){
-            if(boxes[i][y]->get_id() == sign){
-                s_count++;
-                //cout << s_count << endl;
-                if(s_count == 5){
-                    _gameover = true;
+            int s_count = 0;
+            for(int i= -4; i<=4; i++){
+                if(x+i>=0 && x+i<=14){
+                    if(boxes[y][x+i] && boxes[y][x+i]->get_id() == sign){
+                        s_count++;
+                        if(s_count == 5){
+                            _gameover = true;
+                        }
+                    }else{
+                        s_count = 0;
+                    }
+                //cout<<y<<" "<<x+i<<" "<<boxes[y][x+i]->get_id()<<" "<<sign<<" s_count: "<<s_count<<endl;
                 }
-            }else{
-                s_count = 0;
             }
-        }
-        /*
-        ///jobbra-le atlos vizsgalat
+            //cout<<endl;
 
-        s_count = 0;
-        int d_min = min(x_min, y_min);
-        int d_max = min(x_max, y_max);
-        cout<<d_max<<" "<<d_max<<endl;
-        for(int i= d_min; i<=d_max; i++){
-            if(boxes[i][i]->get_id() == sign){
-                s_count++;
-                //cout << s_count << endl;
-                if(s_count == 5){
-                    _gameover = true;
+            ///fuggoleges vizsgalat
+
+            s_count = 0;
+            for(int i= -4; i<=4; i++){
+                if(y+i>=0 && y+i<=14){
+                    if(boxes[y+i][x] && boxes[y+i][x]->get_id() == sign){
+                        s_count++;
+                        if(s_count == 5){
+                            _gameover = true;
+                        }
+                    }else{
+                        s_count = 0;
+                    }
+                //cout<<y+i<<" "<<x<<" "<<boxes[y+i][x]->get_id()<<" "<<sign<<" s_count: "<<s_count<<endl;
                 }
-            }else{
-                s_count = 0;
             }
-        }*/
+            //cout<<endl;
+
+            ///jobbra-le atlos vizsgalat
+
+            s_count = 0;
+            for(int i= -4; i<=4; i++){
+                if(x+i>=0 && x+i<=14 && y+i>=0 && y+i<=14){
+                    if(boxes[y+i][x+i] && boxes[y+i][x+i]->get_id() == sign){
+                        s_count++;
+                        if(s_count == 5){
+                            _gameover = true;
+                        }
+                    }else{
+                        s_count = 0;
+                    }
+                    //cout<<y+i<<" "<<x+i<<" "<<boxes[y+i][x+i]->get_id()<<" "<<sign<<" s_count: "<<s_count<<endl;
+                }
+            }
+            //cout<<endl;
+
+            ///balra-le atlos vizsgalat
+
+            s_count = 0;
+            for(int i= -4; i<=4; i++){
+                if(x-i>=0 && x-i<=14 && y+i>=0 && y+i<=14){
+                    if(boxes[y+i][x-i] && boxes[y+i][x-i]->get_id() == sign){
+                        s_count++;
+                        if(s_count == 5){
+                            _gameover = true;
+                        }
+                    }else{
+                        s_count = 0;
+                    }
+                    //cout<<y+i<<" "<<x-i<<" "<<boxes[y+i][x-i]->get_id()<<" "<<sign<<" s_count: "<<s_count<<endl;
+                }
+            }
+            //cout<<endl;
+
+            ///nyertes
+
+            if(_gameover && _x_moves_next){
+                _textbox->set_text("The winner is: O");
+            }else if(_gameover && !_x_moves_next){
+                _textbox->set_text("The winner is: X");
+            }
+
+
+            ///dontetlen vizsgalat
+
+            s_count = 0;
+            for(int i=0; i<15; i++){
+                for(int j=0; j<15; j++){
+                    if(boxes[i][j]->get_id()!='-'){
+                        s_count++;
+                    };
+                }
+            }
+            if(s_count == 15*15 && !_gameover){
+                _gameover = true;
+                _textbox->set_text("It's a tie.");
+            }
+            /*
+            for(int i=0; i<15; i++){
+                for(int j=0; j<15; j++){
+                    cout<< boxes[i][j]->get_id()<<" ";
+                }
+                cout<<endl;
+            }
+            cout<<endl;
+            */
+        }
 
     }
 
@@ -80,14 +135,16 @@ void GameMaster::game(int x, int y, Box* pbox){
 
 GameMaster::GameMaster(int gx, int gy):Application(gx, gy){
     _textbox = new StaticTextBox(this, 25, 25, 250, 25, "The first player to move: X");
-    for(size_t i=0; i<15; i++){
-        vector<Box*> temp;
-        for(size_t j=0; j<15; j++){
-            temp.push_back(new Box(this,25+40*j,75+40*i,40,40,'-', [i,j,this](Box* pbox){
-                game(i, j, pbox);
-            }));
+    for(int i=0; i<15; i++){
+        for(int j=0; j<15; j++){
+            boxes[i][j] = new Box(this,25+40*j,75+40*i,40,40,'-', [j,i,this](Box* pbox){
+                game(j, i, pbox);
+            });
         }
-        boxes.push_back(temp);
     }
-
+    /* dontetlen tesztelesehez (az osszes box-ot o-ra allitva es az elsot uresre...
+    boxes[0][0] = new Box(this,25+40*0,75+40*0,40,40,'-', [this](Box* pbox){
+                game(0, 0, pbox);
+            });
+    */
 }
